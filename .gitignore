@@ -1,0 +1,11 @@
+.vs/
+AdventOfCode.Console/bin/
+AdventOfCode.Console/obj/
+AdventOfCode.sln.DotSettings.user
+AdventOfCode2022.Logic/bin/
+AdventOfCode2022.Logic/obj/
+AdventOfCode2023.Logic/bin/
+AdventOfCode2023.Logic/obj/
+AdventOfCode.Tests/bin/
+AdventOfCode.Tests/obj/
+.idea/
