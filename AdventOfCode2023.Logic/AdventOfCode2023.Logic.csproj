@@ -11,22 +11,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="input_20231201.txt">
+    <None Update="Inputs\input_20231201.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20231202.txt">
+    <None Update="Inputs\input_20231202.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20231203.txt">
+    <None Update="Inputs\input_20231203.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20231204.txt">
+    <None Update="Inputs\input_20231204.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20231205.txt">
+    <None Update="Inputs\input_20231205.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20231206.txt">
+    <None Update="Inputs\input_20231206.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

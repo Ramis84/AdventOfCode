@@ -11,43 +11,43 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="input_20221201.txt">
+    <None Update="Inputs\input_20221201.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20221202.txt">
+    <None Update="Inputs\input_20221202.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20221203.txt">
+    <None Update="Inputs\input_20221203.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20221204.txt">
+    <None Update="Inputs\input_20221204.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20221205.txt">
+    <None Update="Inputs\input_20221205.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20221206.txt">
+    <None Update="Inputs\input_20221206.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20221207.txt">
+    <None Update="Inputs\input_20221207.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20221208.txt">
+    <None Update="Inputs\input_20221208.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20221209.txt">
+    <None Update="Inputs\input_20221209.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20221210.txt">
+    <None Update="Inputs\input_20221210.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20221211.txt">
+    <None Update="Inputs\input_20221211.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20221212.txt">
+    <None Update="Inputs\input_20221212.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input_20221213.txt">
+    <None Update="Inputs\input_20221213.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

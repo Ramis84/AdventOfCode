@@ -1,8 +1,8 @@
-﻿namespace AdventOfCode2023.Logic.Assignments;
+﻿namespace AdventOfCode2023.Logic;
 
 public static class Day2
 {
-    private static readonly string[] Lines = File.ReadAllLines("input_20231202.txt");
+    private static readonly string[] Lines = File.ReadAllLines("Inputs/input_20231202.txt");
     private static readonly Game[] Games = Lines.Select(line => new Game(line)).ToArray();
 
     public static string GetPart1Answer()

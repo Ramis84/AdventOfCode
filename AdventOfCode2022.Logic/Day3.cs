@@ -1,10 +1,10 @@
 ﻿using MoreLinq;
 
-namespace AdventOfCode2022.Logic.Assignments;
+namespace AdventOfCode2022.Logic;
 
 public static class Day3
 {
-    private static readonly string[] Lines = File.ReadAllLines("input_20221203.txt");
+    private static readonly string[] Lines = File.ReadAllLines("Inputs/input_20221203.txt");
     private static readonly Rucksack[] Rucksacks = Lines.Select(line => new Rucksack(line)).ToArray();
 
     public static string GetPart1Answer()

@@ -1,10 +1,10 @@
 ﻿using MoreLinq;
 
-namespace AdventOfCode2023.Logic.Assignments;
+namespace AdventOfCode2023.Logic;
 
 public static class Day3
 {
-    private static readonly string[] Lines = File.ReadAllLines("input_20231203.txt");
+    private static readonly string[] Lines = File.ReadAllLines("Inputs/input_20231203.txt");
     private static readonly Symbol[] Symbols = GetSymbols(Lines);
     private static readonly Number[] Numbers = GetNumbers(Lines);
 

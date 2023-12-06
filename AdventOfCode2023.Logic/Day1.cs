@@ -1,10 +1,10 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace AdventOfCode2023.Logic.Assignments;
+namespace AdventOfCode2023.Logic;
 
 public static class Day1
 {
-    private static readonly string[] Lines = File.ReadAllLines("input_20231201.txt");
+    private static readonly string[] Lines = File.ReadAllLines("Inputs/input_20231201.txt");
     private const string RegexWords = "1|2|3|4|5|6|7|8|9|one|two|three|four|five|six|seven|eight|nine";
     private static readonly Regex RegexWordsLeftToRight = new(RegexWords);
     private static readonly Regex RegexWordsRightToLeft = new(RegexWords, RegexOptions.RightToLeft);

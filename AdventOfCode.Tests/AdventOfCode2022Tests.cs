@@ -1,4 +1,4 @@
-using AdventOfCode2022.Logic.Assignments;
+using AdventOfCode2022.Logic;
 using FluentAssertions;
 
 namespace AdventOfCode.Tests;

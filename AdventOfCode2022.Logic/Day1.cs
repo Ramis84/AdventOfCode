@@ -1,10 +1,10 @@
 ﻿using MoreLinq;
 
-namespace AdventOfCode2022.Logic.Assignments;
+namespace AdventOfCode2022.Logic;
 
 public static class Day1
 {
-    private static readonly string[] Lines = File.ReadAllLines("input_20221201.txt");
+    private static readonly string[] Lines = File.ReadAllLines("Inputs/input_20221201.txt");
 
     private static readonly int[][] Elves = Lines
         .Segment(string.IsNullOrWhiteSpace)
