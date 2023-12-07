@@ -31,28 +31,14 @@ public static class Day7
     {
         var handsWithRanks = hands
             .OrderBy(x => x.Hand, comparer)
-            .Select((hand, index) => (
+            .Select((hand, index) => new
+            {
                 hand.Hand,
                 hand.Bid,
-                Rank: index + 1));
+                Rank = index + 1 
+            });
         var totalWinnings = handsWithRanks.Select(x => x.Bid * x.Rank).Sum();
         return totalWinnings;
-    }
-
-    private class Hand(string cards)
-    {
-        public string Cards { get; } = cards;
-    }
-
-    private enum CardType
-    {
-        HighCard,
-        OnePair,
-        TwoPair,
-        ThreeOfAKind,
-        FullHouse,
-        FourOfAKind,
-        FiveOfAKind
     }
 
     private class Part1Comparer : IComparer<Hand>
@@ -60,43 +46,13 @@ public static class Day7
         public int Compare(Hand? x, Hand? y)
         {
             ArgumentNullException.ThrowIfNull(x);
-            ArgumentNullException.ThrowIfNull(y);
-
-            var xType = GetHandType(x);
-            var yType = GetHandType(y);
-            var typeComparison = xType - yType;
-            if (typeComparison != 0)
-            {
-                return typeComparison;
-            }
-            
-            for (var i = 0; i < 5; i++)
-            {
-                var comparison = GetCardValue(x.Cards[i]) - GetCardValue(y.Cards[i]);
-                if (comparison != 0)
-                    return comparison;
-            }
-
-            return 0;
+            return x.CompareTo(y, GetHandType, GetCardValue);
         }
         
         private static CardType GetHandType(Hand hand)
         {
-            var cardsGroupedWithCount = hand.Cards
-                .GroupBy(card => card)
-                .Select(x => new { Card = x.Key, Count = x.Count() })
-                .OrderByDescending(x => x.Count)
-                .ToArray();
-            return cardsGroupedWithCount[0].Count switch
-            {
-                5 => CardType.FiveOfAKind,
-                4 => CardType.FourOfAKind,
-                3 when cardsGroupedWithCount[1].Count == 2 => CardType.FullHouse,
-                3 => CardType.ThreeOfAKind,
-                2 when cardsGroupedWithCount[1].Count == 2 => CardType.TwoPair,
-                2 => CardType.OnePair,
-                _ => CardType.HighCard
-            };
+            var handType = Hand.GetHandType(hand.Cards);
+            return handType;
         }
 
         private static int GetCardValue(char card)
@@ -126,24 +82,7 @@ public static class Day7
         public int Compare(Hand? x, Hand? y)
         {
             ArgumentNullException.ThrowIfNull(x);
-            ArgumentNullException.ThrowIfNull(y);
-
-            var xType = GetHandType(x);
-            var yType = GetHandType(y);
-            var typeComparison = xType - yType;
-            if (typeComparison != 0)
-            {
-                return typeComparison;
-            }
-            
-            for (var i = 0; i < 5; i++)
-            {
-                var comparison = GetCardValue(x.Cards[i]) - GetCardValue(y.Cards[i]);
-                if (comparison != 0)
-                    return comparison;
-            }
-
-            return 0;
+            return x.CompareTo(y, GetHandType, GetCardValue);
         }
         
         private static CardType GetHandType(Hand hand)
@@ -153,26 +92,11 @@ public static class Day7
             {
                 return CardType.FiveOfAKind;
             }
+
+            var cardsExceptJokers = hand.Cards
+                .Where(x => x != 'J');
+            var currentType = Hand.GetHandType(cardsExceptJokers);
             
-            var cardsGroupedWithCount = hand.Cards
-                .Where(x => x != 'J')
-                .GroupBy(card => card)
-                .Select(x => new { Card = x.Key, Count = x.Count() })
-                .OrderByDescending(x => x.Count)
-                .ToArray();
-            
-            var currentType = cardsGroupedWithCount[0].Count switch
-            {
-                5 => CardType.FiveOfAKind,
-                4 => CardType.FourOfAKind,
-                3 when cardsGroupedWithCount.Length > 1 && 
-                       cardsGroupedWithCount[1].Count == 2 => CardType.FullHouse,
-                3 => CardType.ThreeOfAKind,
-                2 when cardsGroupedWithCount.Length > 1 && 
-                       cardsGroupedWithCount[1].Count == 2 => CardType.TwoPair,
-                2 => CardType.OnePair,
-                _ => CardType.HighCard
-            };
             for (var i = 0; i < jokerCount; i++)
             {
                 // Upgrade
@@ -210,5 +134,63 @@ public static class Day7
                 _ => throw new ArgumentOutOfRangeException(nameof(card), card, null)
             };
         }
+    }
+
+    private class Hand(string cards)
+    {
+        public string Cards { get; } = cards;
+        
+        public int CompareTo(
+            Hand? other,
+            Func<Hand, CardType> handTypeSelector,
+            Func<char, int> cardValueSelector)
+        {
+            ArgumentNullException.ThrowIfNull(other);
+
+            var typeComparison = handTypeSelector(this) - handTypeSelector(other);
+            if (typeComparison != 0)
+                return typeComparison;
+            
+            for (var i = 0; i < 5; i++)
+            {
+                var valueComparison = cardValueSelector(cards[i]) - cardValueSelector(other.Cards[i]);
+                if (valueComparison != 0)
+                    return valueComparison;
+            }
+
+            return 0;
+        } 
+
+        public static CardType GetHandType(IEnumerable<char> cards)
+        {
+            var cardsGroupedWithCount = cards
+                .GroupBy(card => card)
+                .Select(x => new { Card = x.Key, Count = x.Count() })
+                .OrderByDescending(x => x.Count)
+                .ToArray();
+            return cardsGroupedWithCount[0].Count switch
+            {
+                5 => CardType.FiveOfAKind,
+                4 => CardType.FourOfAKind,
+                3 when cardsGroupedWithCount.Length > 1 && 
+                       cardsGroupedWithCount[1].Count == 2 => CardType.FullHouse,
+                3 => CardType.ThreeOfAKind,
+                2 when cardsGroupedWithCount.Length > 1 && 
+                       cardsGroupedWithCount[1].Count == 2 => CardType.TwoPair,
+                2 => CardType.OnePair,
+                _ => CardType.HighCard
+            };
+        }
+    }
+
+    private enum CardType
+    {
+        HighCard,
+        OnePair,
+        TwoPair,
+        ThreeOfAKind,
+        FullHouse,
+        FourOfAKind,
+        FiveOfAKind
     }
 }
