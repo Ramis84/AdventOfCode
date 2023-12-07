@@ -93,8 +93,7 @@ public static class Day7
                 return CardType.FiveOfAKind;
             }
 
-            var cardsExceptJokers = hand.Cards
-                .Where(x => x != 'J');
+            var cardsExceptJokers = hand.Cards.Where(x => x != 'J');
             var currentType = Hand.GetHandType(cardsExceptJokers);
             
             for (var i = 0; i < jokerCount; i++)

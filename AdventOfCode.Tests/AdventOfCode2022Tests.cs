@@ -168,4 +168,16 @@ public class AdventOfCode2022Tests
     {
         Day13.GetPart2Answer().Should().Be("24190");
     }
+
+    [Test]
+    public void Day14Part1Test()
+    {
+        Day14.GetPart1Answer().Should().Be("757");
+    }
+
+    [Test]
+    public void Day14Part2Test()
+    {
+        Day14.GetPart2Answer().Should().Be("24943");
+    }
 }
