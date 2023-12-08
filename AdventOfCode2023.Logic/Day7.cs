@@ -15,22 +15,22 @@ public static class Day7
 
     public static string GetPart1Answer()
     {
-        var totalWinnings = GetTotalWinnings(Hands, new Part1Comparer());
+        var totalWinnings = GetTotalWinnings(Hands, new Part1HandComparer());
         return totalWinnings.ToString();
     }
 
     public static string GetPart2Answer()
     {
-        var totalWinnings = GetTotalWinnings(Hands, new Part2Comparer());
+        var totalWinnings = GetTotalWinnings(Hands, new Part2HandComparer());
         return totalWinnings.ToString();
     }
 
     private static int GetTotalWinnings(
         IEnumerable<(Hand Hand, int Bid)> hands,
-        IComparer<Hand> comparer)
+        IComparer<Hand> handComparer)
     {
         var handsWithRanks = hands
-            .OrderBy(x => x.Hand, comparer)
+            .OrderBy(x => x.Hand, handComparer)
             .Select((hand, index) => new
             {
                 hand.Hand,
@@ -41,21 +41,21 @@ public static class Day7
         return totalWinnings;
     }
 
-    private class Part1Comparer : IComparer<Hand>
+    private class Part1HandComparer : IComparer<Hand>
     {
         public int Compare(Hand? x, Hand? y)
         {
             ArgumentNullException.ThrowIfNull(x);
-            return x.CompareTo(y, GetHandType, GetCardValue);
+            return x.CompareTo(y, GetHandType, GetCardStrength);
         }
         
-        private static CardType GetHandType(Hand hand)
+        private static HandType GetHandType(Hand hand)
         {
             var handType = Hand.GetHandType(hand.Cards);
             return handType;
         }
 
-        private static int GetCardValue(char card)
+        private static int GetCardStrength(char card)
         {
             return card switch
             {
@@ -77,43 +77,43 @@ public static class Day7
         }
     }
 
-    private class Part2Comparer : IComparer<Hand>
+    private class Part2HandComparer : IComparer<Hand>
     {
         public int Compare(Hand? x, Hand? y)
         {
             ArgumentNullException.ThrowIfNull(x);
-            return x.CompareTo(y, GetHandType, GetCardValue);
+            return x.CompareTo(y, GetHandType, GetCardStrength);
         }
         
-        private static CardType GetHandType(Hand hand)
+        private static HandType GetHandType(Hand hand)
         {
             var jokerCount = hand.Cards.Count(x => x == 'J');
             if (jokerCount == 5)
             {
-                return CardType.FiveOfAKind;
+                return HandType.FiveOfAKind;
             }
 
             var cardsExceptJokers = hand.Cards.Where(x => x != 'J');
-            var currentType = Hand.GetHandType(cardsExceptJokers);
+            var currentHandType = Hand.GetHandType(cardsExceptJokers);
             
             for (var i = 0; i < jokerCount; i++)
             {
                 // Upgrade
-                currentType = currentType switch
+                currentHandType = currentHandType switch
                 {
-                    CardType.HighCard => CardType.OnePair,
-                    CardType.OnePair => CardType.ThreeOfAKind,
-                    CardType.TwoPair => CardType.FullHouse,
-                    CardType.ThreeOfAKind => CardType.FourOfAKind,
-                    CardType.FourOfAKind => CardType.FiveOfAKind,
+                    HandType.HighCard => HandType.OnePair,
+                    HandType.OnePair => HandType.ThreeOfAKind,
+                    HandType.TwoPair => HandType.FullHouse,
+                    HandType.ThreeOfAKind => HandType.FourOfAKind,
+                    HandType.FourOfAKind => HandType.FiveOfAKind,
                     _ => throw new ArgumentException("Invalid cards")
                 };
             }
 
-            return currentType;
+            return currentHandType;
         }
 
-        private static int GetCardValue(char card)
+        private static int GetCardStrength(char card)
         {
             return card switch
             {
@@ -141,26 +141,26 @@ public static class Day7
         
         public int CompareTo(
             Hand? other,
-            Func<Hand, CardType> handTypeSelector,
-            Func<char, int> cardValueSelector)
+            Func<Hand, HandType> handTypeSelector,
+            Func<char, int> cardStrengthSelector)
         {
             ArgumentNullException.ThrowIfNull(other);
 
-            var typeComparison = handTypeSelector(this) - handTypeSelector(other);
-            if (typeComparison != 0)
-                return typeComparison;
+            var handTypeComparison = handTypeSelector(this) - handTypeSelector(other);
+            if (handTypeComparison != 0)
+                return handTypeComparison;
             
             for (var i = 0; i < 5; i++)
             {
-                var valueComparison = cardValueSelector(cards[i]) - cardValueSelector(other.Cards[i]);
-                if (valueComparison != 0)
-                    return valueComparison;
+                var cardStrengthComparison = cardStrengthSelector(cards[i]) - cardStrengthSelector(other.Cards[i]);
+                if (cardStrengthComparison != 0)
+                    return cardStrengthComparison;
             }
 
             return 0;
         } 
 
-        public static CardType GetHandType(IEnumerable<char> cards)
+        public static HandType GetHandType(IEnumerable<char> cards)
         {
             var cardsGroupedWithCount = cards
                 .GroupBy(card => card)
@@ -169,20 +169,20 @@ public static class Day7
                 .ToArray();
             return cardsGroupedWithCount[0].Count switch
             {
-                5 => CardType.FiveOfAKind,
-                4 => CardType.FourOfAKind,
+                5 => HandType.FiveOfAKind,
+                4 => HandType.FourOfAKind,
                 3 when cardsGroupedWithCount.Length > 1 && 
-                       cardsGroupedWithCount[1].Count == 2 => CardType.FullHouse,
-                3 => CardType.ThreeOfAKind,
+                       cardsGroupedWithCount[1].Count == 2 => HandType.FullHouse,
+                3 => HandType.ThreeOfAKind,
                 2 when cardsGroupedWithCount.Length > 1 && 
-                       cardsGroupedWithCount[1].Count == 2 => CardType.TwoPair,
-                2 => CardType.OnePair,
-                _ => CardType.HighCard
+                       cardsGroupedWithCount[1].Count == 2 => HandType.TwoPair,
+                2 => HandType.OnePair,
+                _ => HandType.HighCard
             };
         }
     }
 
-    private enum CardType
+    private enum HandType
     {
         HighCard,
         OnePair,

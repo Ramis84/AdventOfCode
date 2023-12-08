@@ -42,7 +42,6 @@ public static class Day8
         
         // Find least common multiple of all numbers in stepsUntilEndsWithZ
         var lcm = stepsUntilEndsWithZ.Aggregate(Lcm);
-
         return lcm.ToString();
     }
     private static long GetStepsUntil(string startingLocation, Func<string, bool> endingLocationPredicate)
