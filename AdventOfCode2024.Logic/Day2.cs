@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode2024.Logic;
+﻿using System.Buffers;
+
+namespace AdventOfCode2024.Logic;
 
 public static class Day2
 {
@@ -12,7 +14,10 @@ public static class Day2
 
     public static string GetPart2Answer()
     {
-        return Reports.Count(x => x.IsSafe(true)).ToString();
+        return Reports
+            .Select(x => x.GetDampenedReports())
+            .Count(dampenedReports => dampenedReports.Any(report => report.IsSafe()))
+            .ToString();
     }
 
     private class Report
@@ -25,39 +30,47 @@ public static class Day2
             _levels = segments.Select(int.Parse).ToArray();
         }
 
-        public bool IsSafe(bool tolerateSingleError = false)
+        private Report(IEnumerable<int> levels)
         {
-            var allLevels = !tolerateSingleError ? [_levels] : GetDampenedLevels();
-            return allLevels.Any(IsSafe);
+            _levels = levels.ToArray();
         }
 
-        private static bool IsSafe(IEnumerable<int> levels)
+        public bool IsSafe()
         {
-            if (levels.Count() == 0) return true;
-            if (levels.ElementAt(0) == levels.ElementAt(1)) return false;
+            // Empty report is safe
+            if (_levels.Length == 0) return true;
             
-            var increasing = levels.ElementAt(1) > levels.ElementAt(0);
+            // Unchanged level is unsafe
+            if (_levels[0] == _levels[1]) return false;
             
-            var previousLevel = levels.ElementAt(0);
-            for (var i = 1; i < levels.Count(); i++)
+            // The report needs to be continuing increasing/decreasing
+            var increasing = _levels[1] > _levels[0];
+            
+            var previousLevel = _levels[0];
+            for (var i = 1; i < _levels.Length; i++)
             {
-                var currentLevel = levels.ElementAt(i);
+                var currentLevel = _levels[i];
                 var difference = currentLevel - previousLevel;
+                
+                // Check if not increasing/decreasing
                 if (increasing && (difference < 1 || difference > 3)) return false;
                 if (!increasing && (difference < -3 || difference > -1)) return false;
+                
                 previousLevel = currentLevel;
             }
 
+            // No unsafe levels is found, so report is safe
             return true;
         }
 
-        private IEnumerable<IEnumerable<int>> GetDampenedLevels()
+        public IEnumerable<Report> GetDampenedReports()
         {
+            // Generate all possible reports where a single level is removed
             for (var i = 0; i < _levels.Length; i++)
             {
-                var before = _levels.Take(i);
-                var after = _levels.Skip(i+1);
-                yield return before.Concat(after);
+                var before = _levels[..i];
+                var after = _levels[(i+1)..];
+                yield return new Report(before.Concat(after));
             }
         }
     }
