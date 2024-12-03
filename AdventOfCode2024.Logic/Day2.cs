@@ -53,8 +53,8 @@ public static class Day2
                 var difference = currentLevel - previousLevel;
                 
                 // Check if not increasing/decreasing
-                if (increasing && (difference < 1 || difference > 3)) return false;
-                if (!increasing && (difference < -3 || difference > -1)) return false;
+                if (increasing && difference is < 1 or > 3) return false;
+                if (!increasing && difference is < -3 or > -1) return false;
                 
                 previousLevel = currentLevel;
             }
