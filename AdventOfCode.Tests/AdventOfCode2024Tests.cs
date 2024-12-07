@@ -76,4 +76,16 @@ public class AdventOfCode2024Tests
     {
         Day6.GetPart2Answer().Should().Be("1719");
     }
+    
+    [Test]
+    public void Day7Part1Test()
+    {
+        Day7.GetPart1Answer().Should().Be("1708857123053");
+    }
+
+    [Test]
+    public void Day7Part2Test()
+    {
+        Day7.GetPart2Answer().Should().Be("189207836795655");
+    }
 }
